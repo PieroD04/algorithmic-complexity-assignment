@@ -29,69 +29,82 @@ with open('Algoritmo Generador/aristas2.csv', newline='') as csvfile:
         if n1 != n2:  # Evitar loops
             G.add_edge(n1, n2)
 
-# Seleccionar aleatoriamente 50 aristas y asegurarse de que el grafo sea conexo
-edges = list(G.edges)
-selected_edges = []
-if len(edges) > 50:
-    selected_edges = random.sample(edges, 50)
-    G_muestral = nx.Graph()
-    G_muestral.add_edges_from(selected_edges)
+# Seleccionar un router_empresa aleatorio
+routers_empresa = [node for node in G.nodes if node_types[node] == 'router_empresa']
+router_empresa = random.choice(routers_empresa)
 
-    # Asegurarse de que el grafo sea conexo
-    if not nx.is_connected(G_muestral):
-        # Conectar componentes desconectados
-        components = list(nx.connected_components(G_muestral))
-        while len(components) > 1:
-            comp1 = components.pop()
-            comp2 = components.pop()
-            node1 = random.choice(list(comp1))
-            node2 = random.choice(list(comp2))
-            G_muestral.add_edge(node1, node2)
-            selected_edges.append((node1, node2))
-            components = list(nx.connected_components(G_muestral))
+# Seleccionar un router_cliente adyacente
+adyacent_clients = [n for n in G.neighbors(router_empresa) if node_types[n] == 'router_cliente']
+if adyacent_clients:
+    router_cliente = random.choice(adyacent_clients)
 else:
-    G_muestral = G
-    selected_edges = edges
+    raise Exception("No hay router_cliente adyacente al router_empresa.")
 
-# Guardar las aristas seleccionadas en un archivo CSV
-with open('aristas_muestral.csv', 'w', newline='') as csvfile:
-    aristas_writer = csv.writer(csvfile)
-    aristas_writer.writerow(['Nodo1', 'Nodo2'])
-    for edge in selected_edges:
-        aristas_writer.writerow(edge)
+# Elegir el número de switches a obtener
+num_switches = 3  # Cambia este valor según lo que necesites
+
+# Seleccionar switches_empresa adyacentes al router_empresa
+adyacent_switch_empresa = [n for n in G.neighbors(router_empresa) if node_types[n] == 'switch_empresa']
+switch_empresa_list = random.sample(adyacent_switch_empresa, min(num_switches, len(adyacent_switch_empresa))) if adyacent_switch_empresa else []
+if not switch_empresa_list:
+    raise Exception("No hay suficientes switch_empresa adyacentes al router_empresa.")
+
+# Seleccionar switches_cliente adyacentes al router_cliente
+adyacent_switch_cliente = [n for n in G.neighbors(router_cliente) if node_types[n] == 'switch_cliente']
+switch_cliente_list = random.sample(adyacent_switch_cliente, min(num_switches, len(adyacent_switch_cliente))) if adyacent_switch_cliente else []
+if not switch_cliente_list:
+    raise Exception("No hay suficientes switch_cliente adyacentes al router_cliente.")
+
+# Crear el subgrafo comenzando desde router_empresa y router_cliente
+subgrafo_nodes = {router_empresa, router_cliente}
+subgrafo_nodes.update(switch_empresa_list)
+subgrafo_nodes.update(switch_cliente_list)
+
+# Obtener nodos adicionales de tipo específico
+tipos_adicionales = ['estacion_trabajo', 'laptop', 'celular', 'tablet', 'computador_escritorio']
+for switch in switch_empresa_list + switch_cliente_list:
+    for tipo in tipos_adicionales:
+        adicionales = [n for n in G.neighbors(switch) if node_types[n] == tipo]
+        subgrafo_nodes.update(adicionales)
+
+# Limitar a 50 nodos si hay más
+if len(subgrafo_nodes) > 50:
+    subgrafo_nodes = set(random.sample(subgrafo_nodes, 50))
+
+# Crear el subgrafo final
+subgrafo = G.subgraph(subgrafo_nodes)
 
 # Asignar colores a los tipos de nodos
 color_map = {
-    'switch': 'blue',
-    'laptop': 'green',
-    'router': 'red',
-    'computador_escritorio': 'purple',
-    'servidor': 'orange',
-    'firewall': 'yellow',
-    'punto_acceso': 'cyan',
-    'estacion_trabajo': 'magenta',
-    'celular': 'brown',
-    'tablet': 'pink'
+    'router_empresa': 'red',     
+    'switch_empresa': 'orange',    
+    'router_cliente': 'yellow',  
+    'switch_cliente': 'green',    
+    'servidor': 'blue',           
+    'firewall': 'black',            
+    'punto_acceso': 'purple',       
+    'estacion_trabajo': 'pink',     
+    'laptop': 'teal',           
+    'celular': 'teal',          
+    'tablet': 'teal',           
+    'computador_escritorio': 'teal'  
 }
 
 # Crear una lista de colores para los nodos
-node_colors = [color_map[node_types[node]] for node in G_muestral.nodes]
+node_colors = [color_map[node_types[node]] for node in subgrafo.nodes]
 
-# Dibujar el grafo
+# Dibujar el subgrafo
 plt.figure(figsize=(12, 12))
+pos = nx.spring_layout(subgrafo, k=0.5, iterations=100)
+nx.draw(subgrafo, pos, node_size=300, node_color=node_colors, edge_color='gray', with_labels=True, font_size=8, font_color='black')
 
-# Usar un layout que acomode los nodos y los separe más
-pos = nx.spring_layout(G_muestral, k=0.5, iterations=100)
-
-# Dibujar los nodos y las aristas
-nx.draw(G_muestral, pos, node_size=300, node_color=node_colors, edge_color='gray', with_labels=True, font_size=8, font_color='black')
-
-# Añadir el título en coordenadas específicas
-plt.text(0.00, 1.123, "Grafo Muestral de la red empresarial", fontsize=15, ha='center')
+# Añadir el título
+plt.title('Grafo Muestral', fontsize=15)
 
 # Crear la leyenda para los colores
 legend_handles = [mpatches.Patch(color=color, label=label) for label, color in color_map.items()]
 plt.legend(handles=legend_handles, loc='upper right', title="Tipos de nodos")
 
-# Mostrar el grafo
+# Mostrar el subgrafo
 plt.savefig("grafo_muestral.png")
+plt.show()
