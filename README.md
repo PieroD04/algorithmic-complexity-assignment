@@ -1,68 +1,66 @@
 # DataPathway
 
-Este proyecto tiene como objetivo optimizar el flujo de tráfico en una red de datos utilizando un enfoque basado en grafos. Se compara el rendimiento de dos algoritmos, **Kruskal** y **Prim**, para la construcción de un **Árbol de Expansión Mínima (MST)**, y se implementa una solución para optimizar la transmisión de datos y reducir la congestión en la red.
+This project aims to optimize traffic flow in a data network using a graph-based approach. It compares the performance of two algorithms, **Kruskal** and **Prim**, for constructing a **Minimum Spanning Tree (MST)**, and implements a solution to optimize data transmission and reduce congestion in the network.
 
-## Integrantes
+## Team Members
 
 - Delgado Corrales, Piero Gonzalo
 - Paredes Puente, Sebastián Roberto
 - Valverde Mozo, Andre Gabriel
 
-## Descripción
+## Description
 
-Se trabajó en un grupo para el curso **CC76 - Complejidad Algorítmica**. Para el proyecto, se utilizó un conjunto de datos real con más de 3.5 millones de flujos de red, donde las direcciones IP se modelaron como nodos y las interacciones de tráfico entre ellas como aristas del grafo. La red resultante representa las conexiones entre dispositivos de la red y el volumen de datos transferidos entre ellos.
+This project was carried out in a group for the course **CC76 - Algorithmic Complexity**. For the project, a real dataset with over 3.5 million network flows was used, where IP addresses were modeled as nodes and traffic interactions between them as edges in the graph. The resulting network represents the connections between devices and the volume of data transferred between them.
 
-### Objetivos
-1. Comparar los algoritmos de Kruskal y Prim en la construcción de un Árbol de Expansión Mínima (MST).
-2. Optimizar la transmisión de datos para reducir la congestión y mejorar la eficiencia del uso del ancho de banda en la red.
-3. Minimizar los costos operativos mediante la identificación de las rutas más eficientes para la transferencia de datos.
-4. Visualizar graficamente los grafos con datos originales y árboles de expansión mínima.
+### Objectives
+1. Compare the Kruskal and Prim algorithms in constructing a Minimum Spanning Tree (MST).
+2. Optimize data transmission to reduce congestion and improve bandwidth efficiency in the network.
+3. Minimize operational costs by identifying the most efficient routes for data transfer.
+4. Visualize the graphs with original data and the minimum spanning trees.
 
-## Algoritmos Implementados
+## Algorithms Implemented
 
 ### Kruskal
-El algoritmo de **Kruskal** fue implementado para construir un Árbol de Expansión Mínima (MST) buscando las conexiones más económicas entre nodos y minimizando el uso de ancho de banda innecesario. Este algoritmo es eficiente para redes dispersas, donde los nodos tienen pocas conexiones directas.
+The **Kruskal** algorithm was implemented to construct a Minimum Spanning Tree (MST) by finding the most economical connections between nodes and minimizing unnecessary bandwidth usage. This algorithm is efficient for sparse networks, where nodes have few direct connections.
 
 ### Prim
-El algoritmo de **Prim** también fue implementado y comparado con Kruskal. A diferencia de Kruskal, Prim crece el MST agregando un nodo a la vez, eligiendo siempre el nodo más cercano al MST en formación. Este enfoque es adecuado para redes densas, donde la mayoría de los nodos están conectados.
+The **Prim** algorithm was also implemented and compared to Kruskal. Unlike Kruskal, Prim grows the MST by adding one node at a time, always choosing the node closest to the MST being formed. This approach is suitable for dense networks, where most nodes are connected.
 
-Ambos algoritmos fueron evaluados en función de la eficiencia, la complejidad temporal y la efectividad en la optimización del tráfico de red.
+Both algorithms were evaluated based on efficiency, time complexity, and effectiveness in optimizing network traffic.
 
-## Estructura del Proyecto
+## Project Structure
 
-- `scripts/`: Algoritmos como Kruskal y Prim del proyecto.
-- `static/`: Archivos de estilos e imagenes para su visualización en la página web.
-- `templates/`: Archivos html con la estructura de la página web.
+- `scripts/`: Algorithms like Kruskal and Prim used in the project.
+- `static/`: Style files and images for visualization in the web page.
+- `templates/`: HTML files for the structure of the web page.
 
-## Requisitos
+## Requirements
 
 - Python 3.x
-- Bibliotecas necesarias:
+- Required libraries:
     - `networkx`
     - `matplotlib`
     - `flask`
     - `pandas`
     - `scipy`
 
-## Instalación
+## Installation
 
-1. Clona el repositorio:
+1. Clone the repository:
 
     ```bash
     git clone https://github.com/usuario/proyecto-optimizacion-trafico.git
     cd proyecto-optimizacion-trafico
     ```
 
-2. Instala las dependencias:
+2. Install the dependencies:
 
     ```bash
     pip install -r requirements.txt
     ```
 
-3. Ejecuta el proyecto:
+3. Run the project:
 
     ```bash
     python main.py
     ```
-
-
