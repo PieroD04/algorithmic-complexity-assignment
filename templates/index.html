@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
+    <title>Optimización de Tráfico de Red</title>
+</head>
+<body>
+    <h1>Optimización de Tráfico de Red</h1>
+    <form action="/visualization" method="POST">
+        <label for="algorithm">Selecciona el algoritmo:</label>
+        <select name="algorithm" id="algorithm">
+            <option value="original" {% if algorithm_name == 'Grafo Original' %}selected{% endif %}>Grafo Original</option>
+            <option value="kruskal" {% if algorithm_name == 'Kruskal' %}selected{% endif %}>Kruskal</option>
+            <option value="prim" {% if algorithm_name == 'Prim' %}selected{% endif %}>Prim</option>
+            <option value="compare" {% if algorithm_name == 'Comparación de algoritmos' %}selected{% endif %}>Comparación de algoritmos</option>
+        </select>
+
+        <!-- Sección de checkboxes de áreas, siempre visible y todos marcados por defecto -->
+        <div id="areas-selection" style="margin-bottom: 20px;">
+            <h3>Selecciona el área que desea visualizar:</h3>
+            <input type="radio" name="area" value="Todos" {% if selected_area == 'Todos' %}checked{% endif %}> Todos<br>
+            <input type="radio" name="area" value="Área Académica" {% if selected_area == 'Área Académica' %}checked{% endif %}> Área Académica<br>
+            <input type="radio" name="area" value="Administración" {% if selected_area == 'Administración' %}checked{% endif %}> Administración<br>
+            <input type="radio" name="area" value="Residencias Estudiantiles" {% if selected_area == 'Residencias Estudiantiles' %}checked{% endif %}> Residencias Estudiantiles<br>
+            <input type="radio" name="area" value="Biblioteca" {% if selected_area == 'Biblioteca' %}checked{% endif %}> Biblioteca<br>
+            <input type="radio" name="area" value="Cafetería" {% if selected_area == 'Cafetería' %}checked{% endif %}> Cafetería<br>
+            <input type="radio" name="area" value="Externa" {% if selected_area == 'Externa' %}checked{% endif %}> Externa<br>
+        </div>
+
+
+        <button type="submit">Visualizar</button>
+    </form>
+
+    <div>
+        {% if edges_count or image_load_time or algorithm_load_time %}
+            <h2>Detalles</h2>
+        {% endif %}
+        
+        {% if algorithm_name %}
+            <p><strong>Algoritmo seleccionado:</strong> {{ algorithm_name }}</p>
+        {% endif %}
+
+        {% if edges_count %}
+            <p><strong>Número de aristas:</strong> {{ edges_count }}</p>
+        {% endif %}
+        
+        {% if image_load_time %}
+            <p><strong>Tiempo de procesamiento de imagen:</strong> {{ image_load_time }} s</p>
+        {% endif %}
+        
+        {% if algorithm_load_time %}
+            <p><strong>Tiempo de procesamiento de algoritmo:</strong> {{ algorithm_load_time }} s</p>
+        {% endif %}
+    </div>
+
+    {% if image_path %}
+        <div>
+            <img src="{{ image_path }}" alt="Graph Image">
+        </div>
+    {% endif %}
+</body>
+</html>

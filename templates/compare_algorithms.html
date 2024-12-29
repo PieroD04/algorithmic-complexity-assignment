@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparación de Algoritmos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/compare_algorithms.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div>
+        <h1>Comparación de algoritmos</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Algoritmo</th>
+                    <th>Número de aristas</th>
+                    <th>Tiempo de carga de la imagen</th>
+                    <th>Tiempo de carga del algoritmo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ kruskal_details.algorithm_name }}</td>
+                    <td>{{ kruskal_details.edges_count }}</td>
+                    <td>{{ kruskal_details.image_load_time }}</td>
+                    <td>{{ kruskal_details.algorithm_load_time }}</td>
+                </tr>
+                <tr>
+                    <td>{{ prim_details.algorithm_name }}</td>
+                    <td>{{ prim_details.edges_count }}</td>
+                    <td>{{ prim_details.image_load_time }}</td>
+                    <td>{{ prim_details.algorithm_load_time }}</td>
+                </tr>
+            </tbody>
+        </table>
+ 
+        
+        <!-- Botón para regresar a la página principal -->
+        <a href="{{ url_for('index') }}" class="back-button">
+            <i class="fas fa-arrow-left"></i> Regresar
+        </a>
+        
+    </div>
+
+</body>
+</html>
