@@ -49,8 +49,8 @@ Both algorithms were evaluated based on efficiency, time complexity, and effecti
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/usuario/proyecto-optimizacion-trafico.git
-    cd proyecto-optimizacion-trafico
+    git clone https://github.com/PieroD04/algorithmic-complexity-assignment
+    cd algorithmic-complexity-assignment
     ```
 
 2. Install the dependencies:
@@ -62,5 +62,5 @@ Both algorithms were evaluated based on efficiency, time complexity, and effecti
 3. Run the project:
 
     ```bash
-    python main.py
+    python app.py
     ```
